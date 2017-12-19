@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 9f432f7f06a576b48b8212a538f5a6b5
+timeCreated: 1512079208
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Metroid Fusion
+  fontNames:
+  - Metroid Fusion
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
