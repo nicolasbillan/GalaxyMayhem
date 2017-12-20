@@ -16,37 +16,25 @@ public class TimeScale : MonoBehaviour {
     public float slowMotionPower;
     public bool slowMotionActive;
 
-    private GameObject player;
-
     // Use this for initialization
     void Start () {
+        this.name = GameObjectNames.TimeScale;
         this.LoadSlowMotionGauge();
-        this.LoadPlayer();        
     }
 	
 	// Update is called once per frame
 	void Update () {
-        if(playerScale > 0)
+        if(this.playerScale > 0)
         {
-            if(this.player != null)
-            {
-                this.slowMotionGaugeSprite.rectTransform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, this.player.transform.position);
-            }           
-            
             this.slowMotionGaugeSprite.fillAmount = this.slowMotionGauge / this.slowMotionMaxTime;
 
             this.CheckSlowMotion();
         }
 	}
 
-    void LoadPlayer()
-    {
-        this.player = GameObject.Find(ParametersKeys.PlayerShip);
-    }
-
     void LoadSlowMotionGauge()
     {
-        this.slowMotionGaugeSprite.transform.SetParent(GameObject.Find("UI").transform);
+        this.slowMotionGaugeSprite.transform.SetParent(GameObject.Find(GameObjectNames.Ui).transform);
         this.slowMotionGaugeSprite.rectTransform.localScale = new Vector3(1, 1, 1);
         this.slowMotionGaugeSprite.enabled = false;
         this.slowMotionGauge = this.slowMotionMaxTime;

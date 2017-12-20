@@ -1,22 +1,40 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Assets.Scripts.Constants;
 
 public class PowerUpContainer : MonoBehaviour {
 
     public GameObject[] bulletPrefabs;
     public int activePrefab;
-    private SpriteRenderer bulletSprite;
+    public float movementSpeed;
 
-	// Use this for initialization
-	void Start () {
-        this.LoadActivePrefab();        
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        this.MoveWithLevel();
-	}
+    private SpriteRenderer bulletSprite;
+    private TimeScale timeScale;
+
+    // Use this for initialization
+    void Start()
+    {
+        this.LoadActivePrefab();
+        this.LoadTimeScale();
+        this.LoadMovementSpeed();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        this.Move();
+    }
+
+    void LoadTimeScale()
+    {
+        this.timeScale = GameObject.Find("TimeScale").GetComponent<TimeScale>();
+    }
+
+    void LoadMovementSpeed()
+    {
+        this.movementSpeed = GameObject.Find(GameObjectNames.Level).GetComponent<Level>().scrollSpeed;
+    }
 
     void LoadActivePrefab()
     {
@@ -28,10 +46,9 @@ public class PowerUpContainer : MonoBehaviour {
         this.bulletPrefabs[activePrefab].GetComponent<Bullet>().type = activePrefab;        
     }
 
-    private void MoveWithLevel()
-    {
-        var scrollSpeed = GameObject.Find("Level").GetComponent<Level>().scrollSpeed;
-        this.transform.position += Vector3.down * scrollSpeed * Time.deltaTime * GameObject.Find("TimeScale").GetComponent<TimeScale>().globalScale;
+    private void Move()
+    {        
+        this.transform.position += Vector3.down * this.movementSpeed * Time.deltaTime * this.timeScale.globalScale;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

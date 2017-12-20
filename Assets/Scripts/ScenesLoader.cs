@@ -1,10 +1,16 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Assets.Scripts.Constants;
 
 public class ScenesLoader : MonoBehaviour {
 
     private Dictionary<string, string> parameters;
+
+    public void Start()
+    {
+        this.name = GameObjectNames.ScenesLoader;
+    }
 
     public void Load(string name)
     {

@@ -1,28 +1,34 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Assets.Scripts.Constants;
 
 public class Bullet : MonoBehaviour {
 
     public float movementSpeed;
-
     public float damage;
-
-    //public BulletTypeEnum type;
-
     public float fireRate;
-    
     public int type;
 
+    private TimeScale timeScale;
+
     // Use this for initialization
-    void Start () {
-		
+    void Start ()
+    {
+        this.LoadTimeScale();
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
         this.Move();
 	}
+    
+    void LoadTimeScale()
+    {
+        this.timeScale = GameObject.Find(GameObjectNames.TimeScale).GetComponent<TimeScale>();
+    }
+
 
     void Move()
     {
@@ -32,11 +38,11 @@ public class Bullet : MonoBehaviour {
         switch(layerName)
         {
             case "Player":
-                timeScale = GameObject.Find("TimeScale").GetComponent<TimeScale>().playerScale;
+                timeScale = this.timeScale.playerScale;
                 break;
 
             case "Enemy":
-                timeScale = GameObject.Find("TimeScale").GetComponent<TimeScale>().globalScale;                
+                timeScale = this.timeScale.globalScale;                
                 break;
         }
 
@@ -55,9 +61,4 @@ public class Bullet : MonoBehaviour {
             GameObject.Destroy(this.gameObject);
         }       
     }
-
-    //public enum BulletTypeEnum
-    //{
-
-    //}
 }

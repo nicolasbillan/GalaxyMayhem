@@ -2,6 +2,6 @@
 {
     public class ParametersKeys
     {
-        public const string PlayerShip = "PlayerShip";        
+        public const string PlayerShip = "PlayerShip";
     }
 }

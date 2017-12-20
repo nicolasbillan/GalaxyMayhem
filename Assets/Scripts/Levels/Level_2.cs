@@ -14,20 +14,17 @@ public class Level_2 : MonoBehaviour {
     public Transform valkyrieLeftPosition;
     public Transform valkyrieRightPosition;
     public Transform valkyrieTacklePosition;
-
     public int valkyrieSpawn;
     public bool valkyrieSpawned;
-
+    
     public Transform beybladeLeftSpawnPosition;
     public Transform beybladeRightSpawnPosition;
     public Vector3 beybladeSpawnDirection = Vector3.right;
-
     public float beybladeSpawnRate;
     public float beybladeSpawnCount;
 
     public Transform sharpClamSpawnPosition;
     public Transform sharpClamShootPosition;
-
     public float sharpClamSpawnRate;
     public float sharpClamSpawnCount;
 
@@ -38,7 +35,7 @@ public class Level_2 : MonoBehaviour {
     void Start ()
     {
         this.main = this.GetComponent<Main>();
-        Invoke("DisplayConditionText", 0.001f);
+        Invoke("DisplayConditionText", Time.deltaTime);
     }
 
     private void DisplayConditionText()
@@ -56,7 +53,7 @@ public class Level_2 : MonoBehaviour {
                 this.CheckValkyrieSpawn();
                 this.CheckBeybladeSpawnRate();
                 this.CheckSharpClamSpawnRate();
-            }            
+            }
         }
     }
 

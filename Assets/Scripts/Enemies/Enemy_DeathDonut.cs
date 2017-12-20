@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using Assets.Scripts.Constants;
 
 public class Enemy_DeathDonut : MonoBehaviour {
 
@@ -8,17 +9,16 @@ public class Enemy_DeathDonut : MonoBehaviour {
     public float rotationSpeed;
     public float movementSpeed;
 
-    public float timeScale;
+    public Enemy stats;
     
 	// Use this for initialization
 	void Start () {
-        
-	}
+        this.name = GameObjectNames.BossShip;
+    }
 	
 	// Update is called once per frame
 	void Update () {
         this.CheckDestruction();
-        this.CheckTimeScale();
         this.Rotate();
 
         if (this.CheckStopDistance())
@@ -29,17 +29,12 @@ public class Enemy_DeathDonut : MonoBehaviour {
 
     private void Move()
     {
-        this.transform.position += Vector3.down * movementSpeed * Time.deltaTime * this.timeScale;        
+        this.transform.position += Vector3.down * movementSpeed * Time.deltaTime * this.stats.timeScale;        
     }
 
     void Rotate()
     {        
-        this.transform.Rotate(0, 0, rotationSpeed * this.timeScale);
-    }
-
-    private void CheckTimeScale()
-    {
-        this.timeScale = GameObject.Find("TimeScale").GetComponent<TimeScale>().globalScale;
+        this.transform.Rotate(0, 0, rotationSpeed * this.stats.timeScale);
     }
 
     private bool CheckStopDistance()

@@ -20,8 +20,8 @@ public class UI : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        this.scenesLoader = GameObject.Find("ScenesLoader").GetComponent<ScenesLoader>();
-        this.UpdateActiveBullet(GameObject.Find(ParametersKeys.PlayerShip).GetComponent<Player>().bulletPrefab);
+        this.name = GameObjectNames.Ui;
+        this.scenesLoader = GameObject.Find(GameObjectNames.ScenesLoader).GetComponent<ScenesLoader>();
         this.LoadTarget();
         Invoke("RemoveConditionText", 2);
 	}
@@ -57,7 +57,7 @@ public class UI : MonoBehaviour {
     {
         this.pauseMenu.enabled = !this.pauseMenu.enabled;
         
-        GameObject.Find("TimeScale").GetComponent<TimeScale>().SetPauseStatus(this.pauseMenu.enabled);        
+        GameObject.Find(GameObjectNames.TimeScale).GetComponent<TimeScale>().SetPauseStatus(this.pauseMenu.enabled);        
 
         Cursor.visible = this.pauseMenu.enabled;
 
@@ -71,7 +71,7 @@ public class UI : MonoBehaviour {
 
     public void UpdateKillCount()
     {
-        this.KillCount.text = "KILLS: " + GameObject.Find("Main Camera").GetComponent<Main>().killCount;
+        this.KillCount.text = "KILLS: " + GameObject.Find(GameObjectNames.MainCamera).GetComponent<Main>().killCount;
     }
 
     public void DisplayBossHealth()

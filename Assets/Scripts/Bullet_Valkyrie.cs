@@ -3,61 +3,71 @@ using System.Collections.Generic;
 using UnityEngine;
 using Assets.Scripts.Constants;
 
-public class Bullet_Valkyrie : MonoBehaviour {
-
+public class Bullet_Valkyrie : MonoBehaviour
+{
     public float movementSpeed;
-    public float damage;
+    public Vector3 movementDirection;
+
     public float chargeTime;
+    public float chargeTimeCount;
     public float chargeScale;
     public bool charged;
-    public Vector3 moveDirection;
-    
+
+    private TimeScale timeScale;
+
     // Use this for initialization
     void Start()
     {
         this.charged = false;
         this.chargeScale = Time.deltaTime * 2;
-        Invoke("EndCharge", this.chargeTime);
+        this.timeScale = GameObject.Find(GameObjectNames.TimeScale).GetComponent<TimeScale>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(this.charged)
+        if (this.charged)
         {
             this.Move();
         }
         else
         {
             this.Charge();
-        }        
+        }
     }
 
     void Move()
     {
-        var timeScale = GameObject.Find("TimeScale").GetComponent<TimeScale>().globalScale;
-
-        this.transform.position += this.moveDirection * movementSpeed * Time.deltaTime * timeScale;
+        this.transform.position += this.movementDirection * movementSpeed * Time.deltaTime * timeScale.globalScale;
     }
 
     void Charge()
     {
-        this.transform.localScale += new Vector3(this.chargeScale, this.chargeScale, this.chargeScale);
+        if (this.chargeTimeCount >= this.chargeTime)
+        {
+            this.EndCharge();
+        }
+        else
+        {
+            this.transform.localScale += new Vector3(this.chargeScale * this.timeScale.globalScale, this.chargeScale * this.timeScale.globalScale, this.chargeScale * this.timeScale.globalScale);
+
+            this.chargeTimeCount += Time.deltaTime * this.timeScale.globalScale;
+        }
     }
 
     void EndCharge()
     {
         this.charged = true;
 
-        var player = GameObject.Find(ParametersKeys.PlayerShip);
+        var player = GameObject.Find(GameObjectNames.PlayerShip);
 
-        if(player != null)
+        if (player != null)
         {
-           this.moveDirection = (player.transform.position - this.transform.position).normalized;
+            this.movementDirection = (player.transform.position - this.transform.position).normalized;
         }
         else
         {
-            this.moveDirection = Vector3.down;
+            this.movementDirection = Vector3.down;
         }
     }
 
@@ -72,5 +82,5 @@ public class Bullet_Valkyrie : MonoBehaviour {
         {
             GameObject.Destroy(this.gameObject);
         }
-    }    
+    }
 }

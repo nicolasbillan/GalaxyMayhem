@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Assets.Scripts.Constants;
 
 public class Enemy_Batmovile : MonoBehaviour {
 
@@ -10,12 +11,15 @@ public class Enemy_Batmovile : MonoBehaviour {
 
     public float movementSpeed;
     public float rotationSpeed;
-
     public float fireRate;
     public float fireCount;
+
+    private Enemy stats;
+    private GameObject player;
     
 	// Use this for initialization
 	void Start () {
+        this.LoadStats();
         this.LoadPlaceHolder();
 	}
 	
@@ -34,6 +38,16 @@ public class Enemy_Batmovile : MonoBehaviour {
         }        
     }
 
+    void LoadStats()
+    {
+        this.stats = this.gameObject.GetComponent<Enemy>();
+    }
+
+    void LoadPlayer()
+    {
+        this.player = GameObject.Find(GameObjectNames.PlayerShip);
+    }
+
     void LoadPlaceHolder()
     {
         this.placeHolder = this.transform.FindChild("PH");
@@ -41,32 +55,21 @@ public class Enemy_Batmovile : MonoBehaviour {
 
     private bool CheckShootDistance()
     {
-        var realDistance = this.transform.position.y - shootDistance.position.y;
-
-        if (realDistance <= 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return (this.transform.position.y - shootDistance.position.y <= 0);        
     }
 
     private void Move()
     {
-        this.transform.position += Vector3.down * this.movementSpeed * Time.deltaTime * this.gameObject.GetComponent<Enemy>().timeScale;
+        this.transform.position += Vector3.down * this.movementSpeed * Time.deltaTime * this.stats.timeScale;
     }
 
     private void RotateToPlayer()
     {
-        var player = GameObject.Find("PlayerShip");
-
-        if(player != null)
+        if(this.player != null)
         {
-            var direction = (player.transform.position - this.transform.position).normalized;
+            var direction = (this.player.transform.position - this.transform.position).normalized;
 
-            this.transform.up = Vector3.Lerp(this.transform.up, direction, rotationSpeed * this.gameObject.GetComponent<Enemy>().timeScale);
+            this.transform.up = Vector3.Lerp(this.transform.up, direction, rotationSpeed * this.stats.timeScale);
         }
     }
 
@@ -77,7 +80,7 @@ public class Enemy_Batmovile : MonoBehaviour {
             return true;
         }
 
-        fireCount += Time.deltaTime * this.gameObject.GetComponent<Enemy>().timeScale;
+        fireCount += Time.deltaTime * this.stats.timeScale;
 
         return false;
     }

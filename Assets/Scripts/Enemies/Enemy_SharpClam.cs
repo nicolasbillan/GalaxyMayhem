@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Assets.Scripts.Constants;
 
 public class Enemy_SharpClam : MonoBehaviour {
 
@@ -10,11 +11,11 @@ public class Enemy_SharpClam : MonoBehaviour {
 
     public float movementSpeed;
     public float rotationSpeed;
-
     public float fireRate;
     public float fireCount;
 
     private Enemy stats;
+    private GameObject player;
 
     // Use this for initialization
     void Start()
@@ -43,18 +44,14 @@ public class Enemy_SharpClam : MonoBehaviour {
         this.stats = this.gameObject.GetComponent<Enemy>();
     }
 
+    private void LoadPlayer()
+    {
+        this.player = GameObject.Find(GameObjectNames.PlayerShip);
+    }
+
     private bool CheckShootDistance()
     {
-        var realDistance = this.transform.position.y - shootDistance.position.y;
-
-        if (realDistance <= 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return (this.transform.position.y - shootDistance.position.y <= 0);
     }
 
     private void Move()
@@ -64,11 +61,9 @@ public class Enemy_SharpClam : MonoBehaviour {
 
     private void RotateToPlayer()
     {
-        var player = GameObject.Find("PlayerShip");
-
-        if (player != null)
+        if (this.player != null)
         {
-            var direction = (player.transform.position - this.transform.position).normalized;
+            var direction = (this.player.transform.position - this.transform.position).normalized;
 
             this.transform.up = Vector3.Lerp(this.transform.up, -direction, rotationSpeed * this.stats.timeScale);
         }

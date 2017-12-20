@@ -1,22 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Assets.Scripts.Constants;
 
 public class Level : MonoBehaviour {
 
     public SpriteRenderer background1;
     public SpriteRenderer background2;
-
     public float scrollSpeed;
 
     //private float horizontalSize;
     private float verticalSize;
 
+    private TimeScale timeScale;
+
     // Use this for initialization
     void Start () {
         this.verticalSize = Camera.main.orthographicSize;
-        this.name = "Level";
-        //this.horizontalSize = Screen.width * this.verticalSize / Screen.height;        
+        //this.horizontalSize = Screen.width * this.verticalSize / Screen.height; 
+        this.name = GameObjectNames.Level;
+        this.LoadTimeScale();
 	}
 	
 	// Update is called once per frame
@@ -25,10 +28,15 @@ public class Level : MonoBehaviour {
         this.CheckLoop();
     }
 
+    void LoadTimeScale()
+    {
+        this.timeScale = GameObject.Find(GameObjectNames.TimeScale).GetComponent<TimeScale>();
+    }     
+
     void Scroll()
     {
-        this.background1.transform.position += Vector3.down * scrollSpeed * Time.deltaTime * GameObject.Find("TimeScale").GetComponent<TimeScale>().globalScale;
-        this.background2.transform.position += Vector3.down * scrollSpeed * Time.deltaTime * GameObject.Find("TimeScale").GetComponent<TimeScale>().globalScale;
+        this.background1.transform.position += Vector3.down * scrollSpeed * Time.deltaTime * this.timeScale.globalScale;
+        this.background2.transform.position += Vector3.down * scrollSpeed * Time.deltaTime * this.timeScale.globalScale;
     }
 
     void CheckLoop()

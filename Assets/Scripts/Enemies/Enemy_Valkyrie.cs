@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Assets.Scripts.Constants;
 
 public class Enemy_Valkyrie : MonoBehaviour {
 
@@ -48,6 +49,7 @@ public class Enemy_Valkyrie : MonoBehaviour {
     
     // Use this for initialization
     void Start () {
+        this.name = GameObjectNames.BossShip;
         this.behaivourState = ValkyrieBehaviourStateEnum.Arrival;
         this.stats = this.GetComponent<Enemy>();		
 	}
@@ -61,56 +63,18 @@ public class Enemy_Valkyrie : MonoBehaviour {
                 break;
 
             case ValkyrieBehaviourStateEnum.Gatlin:
-                this.Move();
-                if(this.CheckGatlinFireRate())
-                {
-                    this.ShootGatlin();
-                }
-
-                if(this.CheckGatlinTime())
-                {
-                    this.SwitchState();
-                }
+                this.GatlinState();
                 break;
 
             case ValkyrieBehaviourStateEnum.Cannon:
-                if(!this.cannonCharge)
-                {
-                    this.Move();
-                }
-                else if(this.CheckCannonChargeTime())
-                {
-                    this.EndCannonCharge();
-                }
-                
-                if(this.CheckCannonFireRate())
-                {
-                    this.ShootCannon();                    
-                }
-
-                if(this.CheckCannonTime())
-                {
-                    this.SwitchState();
-                }                
+                this.CannonState();
                 break;
 
             case ValkyrieBehaviourStateEnum.Tackle:
-                if(!this.tackleStateOn)
-                {
-                    this.Move();
-                }
-                else
-                {
-                    this.Tackle();
-                }
-                
-                if(this.CheckTackleTimeRate())
-                {
-                    this.BeginTackle();
-                }
+                this.TackleState();
                 break;
         }
-	}
+    }
 
     public void MoveToArrival()
     {
@@ -120,6 +84,60 @@ public class Enemy_Valkyrie : MonoBehaviour {
         {
             this.moveDirection = Vector3.right;
             this.SwitchState();
+        }
+    }
+
+    public void GatlinState()
+    {
+        this.Move();
+
+        if (this.CheckGatlinFireRate())
+        {
+            this.ShootGatlin();
+        }
+
+        if (this.CheckGatlinTime())
+        {
+            this.SwitchState();
+        }
+    }
+
+    public void CannonState()
+    {
+        if (!this.cannonCharge)
+        {
+            this.Move();
+        }
+        else
+        {
+            this.CheckCannonChargeTime();
+        }
+
+        if (this.CheckCannonFireRate())
+        {
+            this.ShootCannon();
+        }
+
+        if (this.CheckCannonTime())
+        {
+            this.SwitchState();
+        }
+    }
+
+    public void TackleState()
+    {
+        if (!this.tackleStateOn)
+        {
+            this.Move();
+        }
+        else
+        {
+            this.Tackle();
+        }
+
+        if (this.CheckTackleTimeRate())
+        {
+            this.BeginTackle();
         }
     }
 
@@ -243,12 +261,10 @@ public class Enemy_Valkyrie : MonoBehaviour {
     public void StartCannonState()
     {
         this.behaivourState = ValkyrieBehaviourStateEnum.Cannon;
+        this.cannonTimeCount = 0;
+        this.cannonFireCount = 0;
+        this.cannonChargeTimeCount = 0;
         this.ShootCannon();
-    }
-
-    public void EndCannonCharge()
-    {
-        this.cannonCharge = false;
     }
 
     public bool CheckCannonChargeTime()
@@ -256,6 +272,7 @@ public class Enemy_Valkyrie : MonoBehaviour {
         if (this.cannonChargeTimeCount >= this.cannonChargeTime)
         {
             this.cannonChargeTimeCount = 0;
+            this.cannonCharge = false;
             return true;
         }
 
@@ -281,6 +298,7 @@ public class Enemy_Valkyrie : MonoBehaviour {
     {
         this.behaivourState = ValkyrieBehaviourStateEnum.Gatlin;
         this.gatlinFireCount = 0;
+        this.gatlinTimeCount = 0;
     }
 
     public void StartTackleState()
@@ -335,6 +353,19 @@ public class Enemy_Valkyrie : MonoBehaviour {
             default:
                 break;
         }        
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        switch (collision.gameObject.tag)
+        {
+            case "Bullet":
+                if(this.stats.healthPoints <= 0)
+                {
+                    
+                }
+                break;
+        }
     }
 
     private enum ValkyrieBehaviourStateEnum

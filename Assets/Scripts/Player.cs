@@ -2,18 +2,18 @@
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Audio;
+using Assets.Scripts.Constants;
 
 public class Player : MonoBehaviour
 {
     public float movementSpeed = 5f;
     public float rotationSpeed = 0.8f;
-    private float timeScale;
     
     public GameObject bulletPrefab;
     public Transform[] placeHolders;
     public float fireRate;
-    private float fireCount;
     private int firePower;
+    private float fireCount;
     //public AudioSource bulletSound;
     
     public int currentHealth;
@@ -23,13 +23,18 @@ public class Player : MonoBehaviour
     
     private float verticalSize;
     private float horizontalSize;
-
     private float spriteVerticalSize;
     private float spriteHorizontalSize;
+
+    private TimeScale timeScale;
+    private UI ui;
 
     // Use this for initialization
     void Start()
     {
+        this.name = GameObjectNames.PlayerShip;
+        this.LoadTimeScale();
+        this.LoadUi();
         this.LoadHealth();
         this.LoadCameraSize();
         this.LoadShip();
@@ -39,11 +44,10 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        this.GetTimeScale();
         this.CheckMovement();
         this.CheckRotation();        
 
-        if (CheckFireRate() && Input.GetAxis("Fire1") == 1 && this.timeScale != 0)
+        if (CheckFireRate() && Input.GetAxis("Fire1") == 1 && this.timeScale.playerScale != 0)
         {
             this.Shoot();
         }
@@ -93,9 +97,15 @@ public class Player : MonoBehaviour
         }
     }
 
-    void GetTimeScale()
+    void LoadTimeScale()
     {
-        this.timeScale = GameObject.Find("TimeScale").GetComponent<TimeScale>().playerScale;
+        this.timeScale = GameObject.Find(GameObjectNames.TimeScale).GetComponent<TimeScale>();
+    }
+
+    void LoadUi()
+    {
+        this.ui = GameObject.Find(GameObjectNames.Ui).GetComponent<UI>();
+        this.ui.UpdateActiveBullet(this.bulletPrefab);
     }
 
     void CheckMovement()
@@ -103,14 +113,16 @@ public class Player : MonoBehaviour
         if ((Input.GetAxis("Vertical") > 0 && (this.transform.position.y + spriteVerticalSize) < this.verticalSize) 
             || (Input.GetAxis("Vertical") < 0 && (this.transform.position.y - spriteVerticalSize) > -this.verticalSize))
         {
-            this.transform.position += Vector3.up * movementSpeed * Time.deltaTime * Input.GetAxis("Vertical") * this.timeScale;
+            this.transform.position += Vector3.up * movementSpeed * Time.deltaTime * Input.GetAxis("Vertical") * this.timeScale.playerScale;
         }
             
         if ((Input.GetAxis("Horizontal") > 0 && (this.transform.position.x + spriteHorizontalSize) < this.horizontalSize) 
             || (Input.GetAxis("Horizontal") < 0 && (this.transform.position.x - spriteHorizontalSize) > -this.horizontalSize))
         {
-            this.transform.position += Vector3.right * movementSpeed * Time.deltaTime * Input.GetAxis("Horizontal") * this.timeScale;
+            this.transform.position += Vector3.right * movementSpeed * Time.deltaTime * Input.GetAxis("Horizontal") * this.timeScale.playerScale;
         }
+
+        this.timeScale.slowMotionGaugeSprite.rectTransform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, this.transform.position);
     }
 
     void CheckRotation()
@@ -120,7 +132,7 @@ public class Player : MonoBehaviour
 
         var direction = (mousePosition - this.transform.position).normalized;
 
-        this.transform.up = Vector3.Lerp(this.transform.up, direction, rotationSpeed * this.timeScale);
+        this.transform.up = Vector3.Lerp(this.transform.up, direction, rotationSpeed * this.timeScale.playerScale);
     }
 
     bool CheckFireRate()
@@ -180,7 +192,7 @@ public class Player : MonoBehaviour
         else
         {
             this.LoadBullet(bulletPrefab);
-            GameObject.Find("UI").GetComponent<UI>().UpdateActiveBullet(container.bulletPrefabs[container.activePrefab]);
+            this.ui.UpdateActiveBullet(container.bulletPrefabs[container.activePrefab]);
         }
 
         this.LoadPlaceHolders();
@@ -190,7 +202,7 @@ public class Player : MonoBehaviour
     {
         if(currentHealth < maxHealth)
         {
-            GameObject.Find("UI").GetComponent<UI>().UpdatePlayerHealth(this.currentHealth, true);
+            this.ui.UpdatePlayerHealth(this.currentHealth, true);
 
             this.currentHealth++;            
         }
@@ -240,7 +252,7 @@ public class Player : MonoBehaviour
         {           
             this.currentHealth--;
 
-            GameObject.Find("UI").GetComponent<UI>().UpdatePlayerHealth(this.currentHealth, false);
+            this.ui.UpdatePlayerHealth(this.currentHealth, false);
 
             if (this.currentHealth <= 0)
             {
@@ -270,7 +282,7 @@ public class Player : MonoBehaviour
 
     private void InvisibleOn()
     {
-        if(this.hitShield)
+        if (this.hitShield)
         {
             this.GetComponent<SpriteRenderer>().enabled = false;       
             Invoke("InvisibleOff", 0.1f);

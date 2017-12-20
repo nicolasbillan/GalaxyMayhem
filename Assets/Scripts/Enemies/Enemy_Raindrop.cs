@@ -8,9 +8,10 @@ public class Enemy_Raindrop : MonoBehaviour
     
     public float holdTime;
     public float holdCount;
-
     public float normalSpeed;
     public float chargeSpeed;
+
+    private Enemy stats;
 
     // Use this for initialization
     void Start()
@@ -38,22 +39,18 @@ public class Enemy_Raindrop : MonoBehaviour
         }
     }
 
+    void LoadStats()
+    {
+        this.stats = this.GetComponent<Enemy>();
+    }
+
     private bool CheckHoldDistance()
     {
-        var realDistance = this.transform.position.y - holdDistance.position.y;
-
-        if (realDistance <= 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return (this.transform.position.y - holdDistance.position.y <= 0);
     }
 
     private void Move(float speed)
     {
-        this.transform.position += Vector3.down * speed * Time.deltaTime * this.gameObject.GetComponent<Enemy>().timeScale;
+        this.transform.position += Vector3.down * speed * Time.deltaTime * this.stats.timeScale;
     }
 }

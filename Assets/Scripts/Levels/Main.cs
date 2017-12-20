@@ -27,13 +27,15 @@ public class Main : MonoBehaviour
     void Start()
     {
         /*remove*/
-        GameObject.Find("ScenesLoader").GetComponent<ScenesLoader>().SetParameter(ParametersKeys.PlayerShip, "0");
-        
-        this.LoadPlayer();
+        //GameObject.Find("ScenesLoader").GetComponent<ScenesLoader>().SetParameter(ParametersKeys.PlayerShip, "0");
+        this.name = GameObjectNames.MainCamera;
+
         this.LoadUI();
+        this.LoadTimeScale();
+        this.LoadPlayer();
         this.LoadPauseMenu();
         this.LoadCameraSize();
-        this.LoadTimeScale();
+        this.LoadBackground();
     }
 
     // Update is called once per frame
@@ -48,8 +50,7 @@ public class Main : MonoBehaviour
     
     private void LoadTimeScale()
     {
-        var timeScale = GameObject.Instantiate(this.timeScalePrefab);
-        timeScale.name = "TimeScale";
+        GameObject.Instantiate(this.timeScalePrefab);
     }
 
     private void LoadCameraSize()
@@ -62,13 +63,12 @@ public class Main : MonoBehaviour
     {
         var ui = GameObject.Instantiate(this.uiPrefab);
         this.ui = ui.GetComponent<UI>();
-        ui.name = "UI";
     }
 
     private void LoadPauseMenu()
     {
         var pauseMenu = GameObject.Instantiate(this.pauseMenuPrefab);
-        pauseMenu.name = "PauseMenu";
+        pauseMenu.name = GameObjectNames.PauseMenu;
         this.ui.pauseMenu = pauseMenu.GetComponent<Canvas>();
         this.ui.pauseMenu.enabled = false;
 
@@ -92,12 +92,16 @@ public class Main : MonoBehaviour
 
     private void LoadPlayer()
     {
-        var playerShip = int.Parse(GameObject.Find("ScenesLoader").GetComponent<ScenesLoader>().GetParameter(ParametersKeys.PlayerShip));
+        var playerShip = int.Parse(GameObject.Find(GameObjectNames.ScenesLoader).GetComponent<ScenesLoader>().GetParameter(ParametersKeys.PlayerShip));
 
         var player = GameObject.Instantiate(this.playerPrefabs[playerShip]);
 
         player.transform.position = new Vector3(0, -3, 0);
-        player.name = ParametersKeys.PlayerShip;
+    }
+
+    private void LoadBackground()
+    {
+        GameObject.Instantiate(this.backgroundPrefab);
     }
 
     private void CheckPowerUpDropRate()

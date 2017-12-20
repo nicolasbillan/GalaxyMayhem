@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using Assets.Scripts.Constants;
 
 public class MainMenu : MonoBehaviour {
 
@@ -22,10 +22,9 @@ public class MainMenu : MonoBehaviour {
     void LoadScenesLoader()
     {
         /* Just in case another ScenesLoader already exists */
-        GameObject.Destroy(GameObject.Find("ScenesLoader"));
+        GameObject.Destroy(GameObject.Find(GameObjectNames.ScenesLoader));
 
         var loader = GameObject.Instantiate(this.sceneLoaderPrefab);
-        loader.name = "ScenesLoader";
         this.scenesLoader = loader.GetComponent<ScenesLoader>();
     }
 

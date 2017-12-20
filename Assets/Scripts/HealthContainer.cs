@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Assets.Scripts.Constants;
 
 public class HealthContainer : MonoBehaviour {
 
@@ -16,8 +17,8 @@ public class HealthContainer : MonoBehaviour {
 
     private void MoveWithLevel()
     {
-        var scrollSpeed = GameObject.Find("Level").GetComponent<Level>().scrollSpeed;
-        this.transform.position += Vector3.down * scrollSpeed * Time.deltaTime * GameObject.Find("TimeScale").GetComponent<TimeScale>().globalScale;
+        var scrollSpeed = GameObject.Find(GameObjectNames.Level).GetComponent<Level>().scrollSpeed;
+        this.transform.position += Vector3.down * scrollSpeed * Time.deltaTime * GameObject.Find(GameObjectNames.TimeScale).GetComponent<TimeScale>().globalScale;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

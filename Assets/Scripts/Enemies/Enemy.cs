@@ -1,16 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Assets.Scripts.Constants;
 
 public class Enemy : MonoBehaviour
 {
-    public float healthPoints;
-    public float maxHealth;
-
-    public float timeScale;
-
     public UI ui;
 
+    public float healthPoints;
+    public float maxHealth;
+    public float timeScale;    
     public bool boss;
 
     // Use this for initialization
@@ -21,7 +20,7 @@ public class Enemy : MonoBehaviour
         
         if(this.boss)
         {
-            this.StartUI();
+            this.LoadUI();
         }
     }
 
@@ -31,14 +30,14 @@ public class Enemy : MonoBehaviour
         this.GetTimeScale();
     }
 
-    void StartUI()
+    void LoadUI()
     {
-        this.ui = GameObject.Find("UI").GetComponent<UI>();
+        this.ui = GameObject.Find(GameObjectNames.Ui).GetComponent<UI>();
     }
 
     void GetTimeScale()
     {
-        this.timeScale = GameObject.Find("TimeScale").GetComponent<TimeScale>().globalScale;
+        this.timeScale = GameObject.Find(GameObjectNames.TimeScale).GetComponent<TimeScale>().globalScale;
     }
 
     void UpdateBossHealth()
@@ -60,7 +59,7 @@ public class Enemy : MonoBehaviour
             
             if (healthPoints <= 0)
             {
-                GameObject.Find("Main Camera").GetComponent<Main>().killCount++;
+                GameObject.Find(GameObjectNames.MainCamera).GetComponent<Main>().killCount++;
                 GameObject.Destroy(this.gameObject);
             }
             else
@@ -69,6 +68,11 @@ public class Enemy : MonoBehaviour
                 Invoke("GetBackToVerdaderoColor", 0.1f);
             }
         }
+    }
+    
+    public void GetBackToVerdaderoColor()
+    {
+        this.GetComponent<SpriteRenderer>().color = Color.white;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -80,12 +84,7 @@ public class Enemy : MonoBehaviour
                 break;
         }
     }
-
-    public void GetBackToVerdaderoColor()
-    {
-        this.GetComponent<SpriteRenderer>().color = Color.white;
-    }
-
+    
     private void OnBecameInvisible()
     {
         GameObject.Destroy(this.gameObject);
