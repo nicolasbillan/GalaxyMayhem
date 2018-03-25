@@ -21,6 +21,7 @@ public class Enemy_Batmovile : MonoBehaviour {
 	void Start () {
         this.LoadStats();
         this.LoadPlaceHolder();
+        this.LoadPlayer();
 	}
 	
 	// Update is called once per frame

@@ -21,6 +21,7 @@ public class Enemy_SharpClam : MonoBehaviour {
     void Start()
     {
         this.LoadStats();
+        this.LoadPlayer();
     }
 
     // Update is called once per frame

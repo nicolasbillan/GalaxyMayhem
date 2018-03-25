@@ -13,13 +13,12 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
+    <UnityProjectGenerator>VSTU</UnityProjectGenerator>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.5.0f3</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -95,9 +94,11 @@
     <Compile Include="Assets\Scripts\Levels\Level_1.cs" />
     <Compile Include="Assets\Scripts\Levels\Level_2.cs" />
     <Compile Include="Assets\Scripts\Levels\Main.cs" />
+    <Compile Include="Assets\Scripts\Menus\Highscores.cs" />
     <Compile Include="Assets\Scripts\Menus\LevelSelection.cs" />
     <Compile Include="Assets\Scripts\Menus\MainMenu.cs" />
     <Compile Include="Assets\Scripts\Menus\ShipSelection.cs" />
+    <Compile Include="Assets\Scripts\Models\Score.cs" />
     <Compile Include="Assets\Scripts\PH.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\PowerUpContainer.cs" />

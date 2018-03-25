@@ -16,6 +16,7 @@ public class Enemy_Raindrop : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        stats = GetComponent<Enemy>();
         holdCount = 0;
     }    
 
