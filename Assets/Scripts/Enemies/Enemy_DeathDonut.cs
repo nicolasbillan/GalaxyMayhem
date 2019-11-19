@@ -53,7 +53,7 @@ public class Enemy_DeathDonut : MonoBehaviour {
 
     void CheckDestruction()
     {
-        var gameObject = this.transform.FindChild("DeathDonut");
+        var gameObject = this.transform.Find("DeathDonut");
 
         if(gameObject == null)
         {

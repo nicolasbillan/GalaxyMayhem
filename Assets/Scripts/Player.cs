@@ -87,13 +87,13 @@ public class Player : MonoBehaviour
     {
         var phName = "PH_" + this.firePower;
         
-        var childs = this.transform.FindChild(phName).childCount;
+        var childs = this.transform.Find(phName).childCount;
 
         placeHolders = new Transform[childs];
 
         for (int i = 0; i < placeHolders.Length; i++)
         {
-            placeHolders[i] = this.transform.FindChild(phName).GetChild(i);
+            placeHolders[i] = this.transform.Find(phName).GetChild(i);
         }
     }
 

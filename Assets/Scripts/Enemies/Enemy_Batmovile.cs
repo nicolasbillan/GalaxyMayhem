@@ -51,7 +51,7 @@ public class Enemy_Batmovile : MonoBehaviour {
 
     void LoadPlaceHolder()
     {
-        this.placeHolder = this.transform.FindChild("PH");
+        this.placeHolder = this.transform.Find("PH");
     }
 
     private bool CheckShootDistance()
