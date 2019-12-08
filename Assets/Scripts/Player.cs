@@ -8,19 +8,19 @@ public class Player : MonoBehaviour
 {
     public float movementSpeed = 5f;
     public float rotationSpeed = 0.8f;
-    
+
     public GameObject bulletPrefab;
     public Transform[] placeHolders;
     public float fireRate;
     private int firePower;
     private float fireCount;
     //public AudioSource bulletSound;
-    
+
     public int currentHealth;
     public int maxHealth = 5;
     public float hitShieldTime = 1f;
     private bool hitShield;
-    
+
     private float verticalSize;
     private float horizontalSize;
     private float spriteVerticalSize;
@@ -45,18 +45,18 @@ public class Player : MonoBehaviour
     void Update()
     {
         this.CheckMovement();
-        this.CheckRotation();        
+        this.CheckRotation();
 
         if (CheckFireRate() && Input.GetAxis("Fire1") == 1 && this.timeScale.playerScale != 0)
         {
             this.Shoot();
         }
-    }      
+    }
 
     void LoadHealth()
     {
         this.currentHealth = maxHealth;
-        this.hitShield = false;    
+        this.hitShield = false;
     }
 
     void LoadCameraSize()
@@ -66,7 +66,7 @@ public class Player : MonoBehaviour
     }
 
     void LoadShip()
-    {       
+    {
         var sprite = this.gameObject.GetComponent<SpriteRenderer>();
 
         sprite.sortingOrder = 1;
@@ -82,11 +82,11 @@ public class Player : MonoBehaviour
         this.fireRate = this.bulletPrefab.GetComponent<Bullet>().fireRate;
         this.firePower = 1;
     }
-    
+
     void LoadPlaceHolders()
     {
         var phName = "PH_" + this.firePower;
-        
+
         var childs = this.transform.Find(phName).childCount;
 
         placeHolders = new Transform[childs];
@@ -110,13 +110,13 @@ public class Player : MonoBehaviour
 
     void CheckMovement()
     {
-        if ((Input.GetAxis("Vertical") > 0 && (this.transform.position.y + spriteVerticalSize) < this.verticalSize) 
+        if ((Input.GetAxis("Vertical") > 0 && (this.transform.position.y + spriteVerticalSize) < this.verticalSize)
             || (Input.GetAxis("Vertical") < 0 && (this.transform.position.y - spriteVerticalSize) > -this.verticalSize))
         {
             this.transform.position += Vector3.up * movementSpeed * Time.deltaTime * Input.GetAxis("Vertical") * this.timeScale.playerScale;
         }
-            
-        if ((Input.GetAxis("Horizontal") > 0 && (this.transform.position.x + spriteHorizontalSize) < this.horizontalSize) 
+
+        if ((Input.GetAxis("Horizontal") > 0 && (this.transform.position.x + spriteHorizontalSize) < this.horizontalSize)
             || (Input.GetAxis("Horizontal") < 0 && (this.transform.position.x - spriteHorizontalSize) > -this.horizontalSize))
         {
             this.transform.position += Vector3.right * movementSpeed * Time.deltaTime * Input.GetAxis("Horizontal") * this.timeScale.playerScale;
@@ -152,7 +152,7 @@ public class Player : MonoBehaviour
         for (var i = 0; i < placeHolders.GetLength(0); i++)
         {
             var bullet = GameObject.Instantiate(this.bulletPrefab);
-                        
+
             bullet.transform.position = this.placeHolders[i].position;
             bullet.transform.up = this.placeHolders[i].up;
             bullet.gameObject.layer = this.gameObject.layer;
@@ -200,14 +200,14 @@ public class Player : MonoBehaviour
 
     void ApplyHealPack()
     {
-        if(currentHealth < maxHealth)
+        if (currentHealth < maxHealth)
         {
             this.ui.UpdatePlayerHealth(this.currentHealth, true);
 
-            this.currentHealth++;            
+            this.currentHealth++;
         }
     }
-    
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         switch (collision.gameObject.tag)
@@ -232,7 +232,7 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
             this.EnemyHit();
         }
@@ -248,8 +248,8 @@ public class Player : MonoBehaviour
 
     private void HitTaken()
     {
-        if(!hitShield)
-        {           
+        if (!hitShield)
+        {
             this.currentHealth--;
 
             this.ui.UpdatePlayerHealth(this.currentHealth, false);
@@ -259,13 +259,13 @@ public class Player : MonoBehaviour
                 this.TriggerDeathSecuence();
             }
             else
-            {                
+            {
                 this.hitShield = true;
 
                 this.InvisibleOn();
                 Invoke("ResetHitShield", hitShieldTime);
             }
-        }        
+        }
     }
 
     private void TriggerDeathSecuence()
@@ -284,7 +284,7 @@ public class Player : MonoBehaviour
     {
         if (this.hitShield)
         {
-            this.GetComponent<SpriteRenderer>().enabled = false;       
+            this.GetComponent<SpriteRenderer>().enabled = false;
             Invoke("InvisibleOff", 0.1f);
         }
     }

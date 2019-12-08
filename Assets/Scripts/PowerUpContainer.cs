@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Assets.Scripts.Constants;
 
-public class PowerUpContainer : MonoBehaviour {
-
+public class PowerUpContainer : MonoBehaviour
+{
     public GameObject[] bulletPrefabs;
     public int activePrefab;
     public float movementSpeed;
@@ -43,11 +43,11 @@ public class PowerUpContainer : MonoBehaviour {
 
         bulletSprite.sprite = this.bulletPrefabs[activePrefab].GetComponent<SpriteRenderer>().sprite;
 
-        this.bulletPrefabs[activePrefab].GetComponent<Bullet>().type = activePrefab;        
+        this.bulletPrefabs[activePrefab].GetComponent<Bullet>().type = activePrefab;
     }
 
     private void Move()
-    {        
+    {
         this.transform.position += Vector3.down * this.movementSpeed * Time.deltaTime * this.timeScale.globalScale;
     }
 
