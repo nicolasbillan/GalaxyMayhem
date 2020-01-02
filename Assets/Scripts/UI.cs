@@ -9,6 +9,7 @@ public class UI : MonoBehaviour {
     public Text KillCount;
     public Text Condition;
 
+    public Image SlowMotionIndicator;
     public Image activeBullet;
     public Image[] hitPoints;
     public Image bossHealthBarEmpty;
@@ -20,8 +21,8 @@ public class UI : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        this.name = GameObjectNames.Ui;
-        this.scenesLoader = GameObject.Find(GameObjectNames.ScenesLoader).GetComponent<ScenesLoader>();
+        this.name = GameObjectNames.UI;
+        //this.scenesLoader = GameObject.Find(GameObjectNames.ScenesLoader).GetComponent<ScenesLoader>();
         this.LoadTarget();
         Invoke("RemoveConditionText", 2);
 	}
@@ -71,7 +72,7 @@ public class UI : MonoBehaviour {
 
     public void UpdateKillCount()
     {
-        this.KillCount.text = "KILLS: " + GameObject.Find(GameObjectNames.MainCamera).GetComponent<Main>().killCount;
+        //this.KillCount.text = "KILLS: " + GameObject.Find(GameObjectNames.MainCamera).GetComponent<Main>().killCount;
     }
 
     public void DisplayBossHealth()

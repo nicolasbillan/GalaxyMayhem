@@ -35,8 +35,8 @@ public class Level : MonoBehaviour {
 
     void Scroll()
     {
-        this.background1.transform.position += Vector3.down * scrollSpeed * Time.deltaTime * this.timeScale.globalScale;
-        this.background2.transform.position += Vector3.down * scrollSpeed * Time.deltaTime * this.timeScale.globalScale;
+        this.background1.transform.position += Vector3.down * scrollSpeed * Time.deltaTime * this.timeScale.GlobalScale;
+        this.background2.transform.position += Vector3.down * scrollSpeed * Time.deltaTime * this.timeScale.GlobalScale;
     }
 
     void CheckLoop()

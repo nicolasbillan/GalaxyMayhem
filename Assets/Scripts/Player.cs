@@ -47,7 +47,7 @@ public class Player : MonoBehaviour
         this.CheckMovement();
         this.CheckRotation();
 
-        if (CheckFireRate() && Input.GetAxis("Fire1") == 1 && this.timeScale.playerScale != 0)
+        if (CheckFireRate() && Input.GetAxis("Fire1") == 1 && this.timeScale.PlayerScale != 0)
         {
             this.Shoot();
         }
@@ -79,7 +79,7 @@ public class Player : MonoBehaviour
     void LoadBullet(GameObject bulletPrefab)
     {
         this.bulletPrefab = bulletPrefab;
-        this.fireRate = this.bulletPrefab.GetComponent<Bullet>().fireRate;
+        //this.fireRate = this.bulletPrefab.GetComponent<Bullet>().fireRate;
         this.firePower = 1;
     }
 
@@ -104,7 +104,7 @@ public class Player : MonoBehaviour
 
     void LoadUi()
     {
-        this.ui = GameObject.Find(GameObjectNames.Ui).GetComponent<UI>();
+        this.ui = GameObject.Find(GameObjectNames.UI).GetComponent<UI>();
         this.ui.UpdateActiveBullet(this.bulletPrefab);
     }
 
@@ -113,16 +113,16 @@ public class Player : MonoBehaviour
         if ((Input.GetAxis("Vertical") > 0 && (this.transform.position.y + spriteVerticalSize) < this.verticalSize)
             || (Input.GetAxis("Vertical") < 0 && (this.transform.position.y - spriteVerticalSize) > -this.verticalSize))
         {
-            this.transform.position += Vector3.up * movementSpeed * Time.deltaTime * Input.GetAxis("Vertical") * this.timeScale.playerScale;
+            this.transform.position += Vector3.up * movementSpeed * Time.deltaTime * Input.GetAxis("Vertical") * this.timeScale.PlayerScale;
         }
 
         if ((Input.GetAxis("Horizontal") > 0 && (this.transform.position.x + spriteHorizontalSize) < this.horizontalSize)
             || (Input.GetAxis("Horizontal") < 0 && (this.transform.position.x - spriteHorizontalSize) > -this.horizontalSize))
         {
-            this.transform.position += Vector3.right * movementSpeed * Time.deltaTime * Input.GetAxis("Horizontal") * this.timeScale.playerScale;
+            this.transform.position += Vector3.right * movementSpeed * Time.deltaTime * Input.GetAxis("Horizontal") * this.timeScale.PlayerScale;
         }
 
-        this.timeScale.slowMotionGaugeSprite.rectTransform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, this.transform.position);
+        //this.timeScale.slowMotionGaugeSprite.rectTransform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, this.transform.position);
     }
 
     void CheckRotation()
@@ -132,7 +132,7 @@ public class Player : MonoBehaviour
 
         var direction = (mousePosition - this.transform.position).normalized;
 
-        this.transform.up = Vector3.Lerp(this.transform.up, direction, rotationSpeed * this.timeScale.playerScale);
+        this.transform.up = Vector3.Lerp(this.transform.up, direction, rotationSpeed * this.timeScale.PlayerScale);
     }
 
     bool CheckFireRate()

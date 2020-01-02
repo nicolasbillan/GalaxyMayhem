@@ -48,7 +48,7 @@ public class PowerUpContainer : MonoBehaviour
 
     private void Move()
     {
-        this.transform.position += Vector3.down * this.movementSpeed * Time.deltaTime * this.timeScale.globalScale;
+        this.transform.position += Vector3.down * this.movementSpeed * Time.deltaTime * this.timeScale.GlobalScale;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

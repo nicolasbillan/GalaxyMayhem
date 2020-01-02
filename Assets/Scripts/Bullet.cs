@@ -5,18 +5,15 @@ using Assets.Scripts.Constants;
 
 public class Bullet : MonoBehaviour
 {
+    public TimeScale TimeScale;
+    public float MovementSpeed;
 
-    public float movementSpeed;
     public float damage;
-    public float fireRate;
     public int type;
-
-    private TimeScale timeScale;
 
     // Use this for initialization
     void Start()
     {
-        this.LoadTimeScale();
     }
 
     // Update is called once per frame
@@ -25,28 +22,25 @@ public class Bullet : MonoBehaviour
         this.Move();
     }
 
-    void LoadTimeScale()
-    {
-        this.timeScale = GameObject.Find(GameObjectNames.TimeScale).GetComponent<TimeScale>();
-    }
-    
     void Move()
     {
         float timeScale = 1;
-        var layerName = LayerMask.LayerToName(this.gameObject.layer);        
 
-        switch (layerName)
+        if (this.TimeScale != null)
         {
-            case "Player":
-                timeScale = this.timeScale.playerScale;
-                break;
+            switch (LayerMask.LayerToName(this.gameObject.layer))
+            {
+                case GameObjectsLayers.Player:
+                    timeScale = this.TimeScale.PlayerScale;
+                    break;
 
-            case "Enemy":
-                timeScale = this.timeScale.globalScale;
-                break;
+                case GameObjectsLayers.Enemy:
+                    timeScale = this.TimeScale.GlobalScale;
+                    break;
+            }
         }
 
-        this.transform.position += this.transform.up * movementSpeed * Time.deltaTime * timeScale;
+        this.transform.position += this.transform.up * this.MovementSpeed * Time.deltaTime * timeScale;
     }
 
     private void OnBecameInvisible()

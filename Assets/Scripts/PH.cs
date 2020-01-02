@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PH : MonoBehaviour {
 
+	[Range(0.1f, 1)]
+	public float DrawSize;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -16,6 +19,6 @@ public class PH : MonoBehaviour {
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawSphere(this.transform.position, 0.5f);
+        Gizmos.DrawSphere(this.transform.position, this.DrawSize);
     }
 }

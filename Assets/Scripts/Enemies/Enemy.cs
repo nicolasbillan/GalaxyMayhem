@@ -32,12 +32,12 @@ public class Enemy : MonoBehaviour
 
     void LoadUI()
     {
-        this.ui = GameObject.Find(GameObjectNames.Ui).GetComponent<UI>();
+        this.ui = GameObject.Find(GameObjectNames.UI).GetComponent<UI>();
     }
 
     void GetTimeScale()
     {
-        this.timeScale = GameObject.Find(GameObjectNames.TimeScale).GetComponent<TimeScale>().globalScale;
+        this.timeScale = GameObject.Find(GameObjectNames.TimeScale).GetComponent<TimeScale>().GlobalScale;
     }
 
     void UpdateBossHealth()

@@ -38,7 +38,7 @@ public class Bullet_Valkyrie : MonoBehaviour
 
     void Move()
     {
-        this.transform.position += this.movementDirection * movementSpeed * Time.deltaTime * timeScale.globalScale;
+        this.transform.position += this.movementDirection * movementSpeed * Time.deltaTime * timeScale.GlobalScale;
     }
 
     void Charge()
@@ -49,9 +49,9 @@ public class Bullet_Valkyrie : MonoBehaviour
         }
         else
         {
-            this.transform.localScale += new Vector3(this.chargeScale * this.timeScale.globalScale, this.chargeScale * this.timeScale.globalScale, this.chargeScale * this.timeScale.globalScale);
+            this.transform.localScale += new Vector3(this.chargeScale * this.timeScale.GlobalScale, this.chargeScale * this.timeScale.GlobalScale, this.chargeScale * this.timeScale.GlobalScale);
 
-            this.chargeTimeCount += Time.deltaTime * this.timeScale.globalScale;
+            this.chargeTimeCount += Time.deltaTime * this.timeScale.GlobalScale;
         }
     }
 

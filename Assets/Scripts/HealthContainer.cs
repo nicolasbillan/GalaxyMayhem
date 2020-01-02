@@ -18,7 +18,7 @@ public class HealthContainer : MonoBehaviour {
     private void MoveWithLevel()
     {
         var scrollSpeed = GameObject.Find(GameObjectNames.Level).GetComponent<Level>().scrollSpeed;
-        this.transform.position += Vector3.down * scrollSpeed * Time.deltaTime * GameObject.Find(GameObjectNames.TimeScale).GetComponent<TimeScale>().globalScale;
+        this.transform.position += Vector3.down * scrollSpeed * Time.deltaTime * GameObject.Find(GameObjectNames.TimeScale).GetComponent<TimeScale>().GlobalScale;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

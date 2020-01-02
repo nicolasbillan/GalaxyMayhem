@@ -3,84 +3,120 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Assets.Scripts.Constants;
+using System;
 
-public class TimeScale : MonoBehaviour {
-    
-    public float playerScale = 1;
-    public float globalScale = 1;
+public class TimeScale : MonoBehaviour
+{
+    public UI UI;
 
-    public Image slowMotionGaugeSprite;
-    public float slowMotionMaxTime;
-    public float slowMotionRechargeTime;
-    public float slowMotionGauge;    
-    public float slowMotionPower;
-    public bool slowMotionActive;
+    public float MainScale = 1;
+    public float PlayerScale = 1;
+    public float GlobalScale = 1;
+
+    public float SlowMotionMaxTime;
+    public float SlowMotionMinTime;
+    public float SlowMotionCurrentTime;
+    public float SlowMotionPower;
+    public bool SlowMotionActive;
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         this.name = GameObjectNames.TimeScale;
-        this.LoadSlowMotionGauge();
-    }
-	
-	// Update is called once per frame
-	void Update () {
-        if(this.playerScale > 0)
-        {
-            this.slowMotionGaugeSprite.fillAmount = this.slowMotionGauge / this.slowMotionMaxTime;
-
-            this.CheckSlowMotion();
-        }
-	}
-
-    void LoadSlowMotionGauge()
-    {
-        this.slowMotionGaugeSprite.transform.SetParent(GameObject.Find(GameObjectNames.Ui).transform);
-        this.slowMotionGaugeSprite.rectTransform.localScale = new Vector3(1, 1, 1);
-        this.slowMotionGaugeSprite.enabled = false;
-        this.slowMotionGauge = this.slowMotionMaxTime;
-        this.slowMotionActive = false;
+        this.LoadUI();
+        this.LoadSlowMotion();
     }
 
-    void CheckSlowMotion()
+    private void LoadUI()
     {
-        if (Input.GetAxis("SlowMotion") == 1 && (slowMotionActive && slowMotionGauge > 0 || !slowMotionActive && this.slowMotionGauge >= 0.5f))
-        {
-            if(!slowMotionActive && this.slowMotionGauge >= 0.5f)
-            {
-                this.slowMotionGauge -= 0.5f;
-            }
+        this.UI = GameObject.Find(GameObjectNames.UI).GetComponent<UI>();
+        this.UI.SlowMotionIndicator.enabled = false;
+    }
 
-            this.slowMotionActive = true;                      
-        }
-        else
-        {                        
-            this.slowMotionActive = false;
-        }
+    private void LoadSlowMotion()
+    {
+        this.SlowMotionCurrentTime = this.SlowMotionMaxTime;
+        this.SlowMotionActive = false;
+    }
 
-        if(slowMotionActive)
+    // Update is called once per frame
+    void Update()
+    {
+        if (this.PlayerScale <= 0) { return; }
+
+        if (this.SlowMotionActive)
         {
-            this.slowMotionGaugeSprite.enabled = true;
-            this.slowMotionGauge -= Time.deltaTime;
-            this.globalScale = this.slowMotionPower;
+            /* Consume available time */
+            this.Consume();
+
+            /* Change global scale */
+            this.GlobalScale = this.SlowMotionPower;
         }
         else
         {
-            if (slowMotionGauge < this.slowMotionMaxTime)
+            /* Recharge consumed time */
+            this.Recharge();
+
+            /* Reset global scale */
+            this.GlobalScale = this.MainScale;
+        }
+
+        /* Update slow motion indicator */
+        this.UI.SlowMotionIndicator.fillAmount = this.SlowMotionCurrentTime / this.SlowMotionMaxTime;
+    }
+
+    private void Recharge()
+    {
+        /* Check if you have time to restore */
+        if (this.SlowMotionCurrentTime < this.SlowMotionMaxTime)
+        {
+            /* Restore current time */
+            this.SlowMotionCurrentTime += Time.deltaTime;
+        }
+        else
+        {
+            if (this.UI == null) { return; }
+
+            /* Once fully charged, hide indicator */
+            this.UI.SlowMotionIndicator.enabled = false;
+        }
+    }
+
+    private void Consume()
+    {
+        /* Consume current time */
+        this.SlowMotionCurrentTime -= Time.deltaTime;
+
+        if (this.UI == null) { return; }
+
+        /* Display current time */
+        this.UI.SlowMotionIndicator.enabled = true;
+    }
+
+    public void SlowMotion(bool active)
+    {
+        /* Check if you have enough time */
+        if (active && this.SlowMotionCurrentTime >= this.SlowMotionMinTime)
+        {
+            /* The first time it is used, consume minimum time */
+            if (!this.SlowMotionActive)
             {
-                this.slowMotionGauge += Time.deltaTime;
-            }
-            else
-            {
-                this.slowMotionGaugeSprite.enabled = false;
+                this.SlowMotionCurrentTime -= this.SlowMotionMinTime;
             }
 
-            this.globalScale = this.playerScale;
+            /* Turn slow motion on */
+            this.SlowMotionActive = true;
+        }
+        else
+        {
+            /* Turn slow motion off */
+            this.SlowMotionActive = false;
         }
     }
 
     public void SetPauseStatus(bool paused)
     {
-        this.playerScale = paused ? 0 : 1;
-        this.globalScale = paused ? 0 : 1;
-    }    
+        this.PlayerScale = paused ? 0 : 1;
+        this.GlobalScale = paused ? 0 : 1;
+    }
 }

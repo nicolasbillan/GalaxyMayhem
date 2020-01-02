@@ -4,9 +4,11 @@
     {
         public const string Level = "Level";
 
+        public const string Background = "Background";
+
         public const string MainCamera = "MainCamera";
 
-        public const string Ui = "UI";
+        public const string UI = "UI";
 
         public const string PauseMenu = "Pause";
 
