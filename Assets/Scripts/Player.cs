@@ -182,7 +182,7 @@ public class Player : MonoBehaviour
 
         var bulletPrefab = container.bulletPrefabs[container.activePrefab];
 
-        if (this.bulletPrefab.GetComponent<Bullet>().type == bulletPrefab.GetComponent<Bullet>().type)
+        if (this.bulletPrefab.GetComponent<Bullet>().Type == bulletPrefab.GetComponent<Bullet>().Type)
         {
             if (this.firePower < 3)
             {

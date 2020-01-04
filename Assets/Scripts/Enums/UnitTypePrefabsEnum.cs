@@ -1,7 +1,7 @@
 ﻿namespace Assets.Scripts.Enums
 {
-    public enum EnemyPrefabsEnum
-    {   
+    public enum UnitTypePrefabsEnum
+    {
         Raindrop = 0,
         Batmovile,
         Beyblade

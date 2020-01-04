@@ -54,7 +54,7 @@ public class Level_1 : MonoBehaviour
     {
         if (spawnCount >= spawnRate)
         {
-            this.SpawnEnemy((EnemyPrefabsEnum)Random.Range(0, 2));
+            this.SpawnEnemy((UnitTypePrefabsEnum)Random.Range(0, 2));
             this.spawnCount = 0;
         }
         else
@@ -63,15 +63,15 @@ public class Level_1 : MonoBehaviour
         }
     }
 
-    private void SpawnEnemy(EnemyPrefabsEnum prefab)
+    private void SpawnEnemy(UnitTypePrefabsEnum prefab)
     {
         switch (prefab)
         {
-            case EnemyPrefabsEnum.Raindrop:
+            case UnitTypePrefabsEnum.Raindrop:
                 this.SpawnRaindrop();
                 break;
 
-            case EnemyPrefabsEnum.Batmovile:
+            case UnitTypePrefabsEnum.Batmovile:
                 this.SpawnBatmovile();
                 break;
         }
@@ -79,14 +79,14 @@ public class Level_1 : MonoBehaviour
 
     private void SpawnRaindrop()
     {
-        var enemyShip = GameObject.Instantiate(this.enemyPrefabs[(int)EnemyPrefabsEnum.Raindrop]);
+        var enemyShip = GameObject.Instantiate(this.enemyPrefabs[(int)UnitTypePrefabsEnum.Raindrop]);
         enemyShip.transform.position = new Vector3(Random.Range(-this.main.horizontalSize, this.main.horizontalSize), Random.Range(this.main.verticalSize, this.main.verticalSize + 5), 0);
         enemyShip.GetComponent<Enemy_Raindrop>().holdDistance = this.raindropHoldPosition;
     }
 
     private void SpawnBatmovile()
     {
-        var enemyShip = GameObject.Instantiate(this.enemyPrefabs[(int)EnemyPrefabsEnum.Batmovile]);
+        var enemyShip = GameObject.Instantiate(this.enemyPrefabs[(int)UnitTypePrefabsEnum.Batmovile]);
         enemyShip.transform.position = new Vector3(Random.Range(-this.main.horizontalSize, this.main.horizontalSize), Random.Range(this.main.verticalSize, this.main.verticalSize + 5), 0);
         enemyShip.GetComponent<Enemy_Batmovile>().shootDistance = this.batmovileShootPosisiton;
     }

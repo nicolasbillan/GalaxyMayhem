@@ -8,6 +8,8 @@ public class Weapon : MonoBehaviour
     public TimeScale TimeScale;
     public GameObject BulletPrefab;
     public List<PH> BulletOrigins;
+    public float BulletDamage;
+    public float BulletSpeed;
     public float FireRate;
     public bool FireOnCooldown;
 
@@ -39,12 +41,14 @@ public class Weapon : MonoBehaviour
                 bullet.layer = origin.gameObject.layer;
                 bullet.transform.position = origin.transform.position;
                 bullet.transform.up = origin.transform.up;
-                bullet.GetComponent<Bullet>().TimeScale = this.TimeScale;
 
-                this.Invoke(nameof(this.OnCooldown), this.FireRate);
+                bullet.GetComponent<Bullet>().TimeScale = this.TimeScale;
+                bullet.GetComponent<Bullet>().Damage = this.BulletDamage;
+                bullet.GetComponent<Bullet>().MovementSpeed = this.BulletSpeed;
             }
 
             this.FireOnCooldown = true;
+            this.Invoke(nameof(this.OnCooldown), this.FireRate);
         }
     }
 

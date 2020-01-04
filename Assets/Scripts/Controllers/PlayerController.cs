@@ -24,26 +24,59 @@ public class PlayerController : MonoBehaviour
 
     void LoadUI()
     {
+        /* Find the UI component in the Scene */
         this.UI = GameObject.Find(GameObjectNames.UI).GetComponent<UI>();
+
+        if (this.UI == null)
+        {
+            Debug.LogWarning("UI NOT FOUND");
+        }
     }
 
     private void LoadTimeScale()
     {
         /* Find the TimeScale component in the Scene */
         this.TimeScale = GameObject.Find(GameObjectNames.TimeScale).GetComponent<TimeScale>();
+
+        if (this.TimeScale == null)
+        {
+            Debug.LogWarning("TIMESCALE NOT FOUND");
+        }
     }
 
     private void LoadUnit()
     {
         /* Find the Unit component within myself */
         this.Unit = this.GetComponent<Unit>();
+
+        if (this.Unit != null)
+        {
+            this.Unit.destroy = this.TriggerDeathSecuence;
+
+            if (this.UI != null)
+            {
+                this.Unit.HitPoints = this.UI.HealthBar;
+            }
+        }
+        else
+        {
+            Debug.LogWarning("UNIT NOT FOUND");
+        }
     }
 
     private void LoadWeapon()
     {
         /* Find the Weapon component in my children */
         this.Weapon = this.GetComponentInChildren<Weapon>();
-        this.Weapon.TimeScale = this.TimeScale;
+
+        if (this.Weapon != null)
+        {
+            this.Weapon.TimeScale = this.TimeScale;
+        }
+        else
+        {
+            Debug.LogWarning("WEAPON NOT FOUND");
+        }
     }
 
     // Update is called once per frame
@@ -99,6 +132,11 @@ public class PlayerController : MonoBehaviour
 
         /* Get the input from SlowMotion axis */
         this.TimeScale.SlowMotion(Input.GetAxis("SlowMotion") == 1);
+    }
+
+    void UpdateHealth()
+    {
+        this.Unit.Damage(1);
     }
 
     void BulletHit(GameObject bullet)
@@ -209,7 +247,7 @@ public class PlayerController : MonoBehaviour
     private void TriggerDeathSecuence()
     {
         //SceneManager.LoadScene("GameOver");
-        //GameObject.Destroy(this.gameObject);
+        GameObject.Destroy(this.gameObject);
     }
 
     private void ResetHitShield()

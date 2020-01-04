@@ -43,7 +43,7 @@ public class PowerUpContainer : MonoBehaviour
 
         bulletSprite.sprite = this.bulletPrefabs[activePrefab].GetComponent<SpriteRenderer>().sprite;
 
-        this.bulletPrefabs[activePrefab].GetComponent<Bullet>().type = activePrefab;
+        this.bulletPrefabs[activePrefab].GetComponent<Bullet>().Type = activePrefab;
     }
 
     private void Move()

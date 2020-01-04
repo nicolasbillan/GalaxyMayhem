@@ -7,9 +7,8 @@ public class Bullet : MonoBehaviour
 {
     public TimeScale TimeScale;
     public float MovementSpeed;
-
-    public float damage;
-    public int type;
+    public float Damage;
+    public int Type;
 
     // Use this for initialization
     void Start()
@@ -28,16 +27,18 @@ public class Bullet : MonoBehaviour
 
         if (this.TimeScale != null)
         {
-            switch (LayerMask.LayerToName(this.gameObject.layer))
-            {
-                case GameObjectsLayers.Player:
-                    timeScale = this.TimeScale.PlayerScale;
-                    break;
+            timeScale = this.TimeScale.GlobalScale;
 
-                case GameObjectsLayers.Enemy:
-                    timeScale = this.TimeScale.GlobalScale;
-                    break;
-            }
+            //switch (LayerMask.LayerToName(this.gameObject.layer))
+            //{
+            //    case GameObjectsLayers.Player:
+            //        timeScale = this.TimeScale.PlayerScale;
+            //        break;
+
+            //    case GameObjectsLayers.Enemy:
+            //        timeScale = this.TimeScale.GlobalScale;
+            //        break;
+            //}
         }
 
         this.transform.position += this.transform.up * this.MovementSpeed * Time.deltaTime * timeScale;

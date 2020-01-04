@@ -9,6 +9,8 @@ public class UI : MonoBehaviour {
     public Text KillCount;
     public Text Condition;
 
+    public HealthBar HealthBar;
+
     public Image SlowMotionIndicator;
     public Image activeBullet;
     public Image[] hitPoints;

@@ -50,7 +50,7 @@ public class Enemy : MonoBehaviour
         //bala enemiga
         if (bullet.layer != this.gameObject.layer)
         {
-            this.healthPoints -= bullet.GetComponent<Bullet>().damage;
+            this.healthPoints -= bullet.GetComponent<Bullet>().Damage;
 
             if(this.boss)
             {
