@@ -5,11 +5,13 @@ using UnityEngine.UI;
 
 using Assets.Scripts.Constants;
 
-public class UI : MonoBehaviour {
+public class UI : MonoBehaviour
+{
     public Text KillCount;
     public Text Condition;
 
     public HealthBar HealthBar;
+    public SpecialBar SpecialBar;
 
     public Image SlowMotionIndicator;
     public Image activeBullet;
@@ -22,19 +24,21 @@ public class UI : MonoBehaviour {
     private ScenesLoader scenesLoader;
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         this.name = GameObjectNames.UI;
         //this.scenesLoader = GameObject.Find(GameObjectNames.ScenesLoader).GetComponent<ScenesLoader>();
         this.LoadTarget();
         Invoke("RemoveConditionText", 2);
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
         this.CheckPause();
         this.MoveTarget();
         this.UpdateKillCount();
-    }    
+    }
 
     void LoadTarget()
     {
@@ -59,8 +63,8 @@ public class UI : MonoBehaviour {
     public void TriggerPauseMenu()
     {
         this.pauseMenu.enabled = !this.pauseMenu.enabled;
-        
-        GameObject.Find(GameObjectNames.TimeScale).GetComponent<TimeScale>().SetPauseStatus(this.pauseMenu.enabled);        
+
+        GameObject.Find(GameObjectNames.TimeScale).GetComponent<TimeScale>().SetPauseStatus(this.pauseMenu.enabled);
 
         Cursor.visible = this.pauseMenu.enabled;
 

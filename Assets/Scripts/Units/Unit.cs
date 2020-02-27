@@ -20,7 +20,7 @@ public class Unit : MonoBehaviour
 
     public void Move(Vector3 direction, float speed = 1)
     {
-        this.transform.position += direction * this.MovementSpeed * speed * Time.deltaTime;
+        this.transform.position += direction.normalized * this.MovementSpeed * speed * Time.deltaTime;
         this.MoveHitPoints();
     }
 
@@ -48,7 +48,7 @@ public class Unit : MonoBehaviour
     {
         if (this.HitPoints != null)
         {
-            this.HitPoints.Update(this.CurrentHitPoints / this.MaximumHitPoints);
+            this.HitPoints.UpdateFill(this.CurrentHitPoints / this.MaximumHitPoints);
         }
 
         if (this.CurrentHitPoints <= 0)

@@ -15,13 +15,7 @@ public class HealthBar : MonoBehaviour
         this.Hide();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    public void Update(float fill)
+    public void UpdateFill(float fill)
     {
         this.gameObject.SetActive(true);
         this.Fill.fillAmount = fill;

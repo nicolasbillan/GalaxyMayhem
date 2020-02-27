@@ -7,30 +7,30 @@ using System;
 
 public class TimeScale : MonoBehaviour
 {
-    public UI UI;
-
     public float MainScale = 1;
     public float PlayerScale = 1;
     public float GlobalScale = 1;
 
+    public SpecialBar SlowMotionFill;
     public float SlowMotionMaxTime;
     public float SlowMotionMinTime;
     public float SlowMotionCurrentTime;
     public float SlowMotionPower;
     public bool SlowMotionActive;
 
+    private float SlowMotionFillAmount => this.SlowMotionCurrentTime / this.SlowMotionMaxTime;
+
     // Use this for initialization
     void Start()
     {
         this.name = GameObjectNames.TimeScale;
-        this.LoadUI();
+        this.LoadSpecialBar();
         this.LoadSlowMotion();
     }
 
-    private void LoadUI()
+    private void LoadSpecialBar()
     {
-        this.UI = GameObject.Find(GameObjectNames.UI).GetComponent<UI>();
-        this.UI.SlowMotionIndicator.enabled = false;
+        this.SlowMotionFill = GameObject.Find(GameObjectNames.UI).GetComponent<UI>().SpecialBar;
     }
 
     private void LoadSlowMotion()
@@ -61,8 +61,10 @@ public class TimeScale : MonoBehaviour
             this.GlobalScale = this.MainScale;
         }
 
+        if (this.SlowMotionFill == null || this.SlowMotionFillAmount >= 1) { return; }
+
         /* Update slow motion indicator */
-        this.UI.SlowMotionIndicator.fillAmount = this.SlowMotionCurrentTime / this.SlowMotionMaxTime;
+        this.SlowMotionFill.UpdateFill(this.SlowMotionFillAmount);
     }
 
     private void Recharge()
@@ -75,10 +77,10 @@ public class TimeScale : MonoBehaviour
         }
         else
         {
-            if (this.UI == null) { return; }
+            if (this.SlowMotionFill == null) { return; }
 
             /* Once fully charged, hide indicator */
-            this.UI.SlowMotionIndicator.enabled = false;
+            this.SlowMotionFill.enabled = false;
         }
     }
 
@@ -87,10 +89,10 @@ public class TimeScale : MonoBehaviour
         /* Consume current time */
         this.SlowMotionCurrentTime -= Time.deltaTime;
 
-        if (this.UI == null) { return; }
+        if (this.SlowMotionFill == null) { return; }
 
         /* Display current time */
-        this.UI.SlowMotionIndicator.enabled = true;
+        this.SlowMotionFill.enabled = true;
     }
 
     public void SlowMotion(bool active)

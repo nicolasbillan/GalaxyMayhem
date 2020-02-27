@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public UI UI;
     public TimeScale TimeScale;
     public Unit Unit;
+    public Dash Dash;
     public Weapon Weapon;
 
     // Use this for initialization
@@ -19,6 +20,7 @@ public class PlayerController : MonoBehaviour
         this.LoadUI();
         this.LoadTimeScale();
         this.LoadUnit();
+        this.LoadDash();
         this.LoadWeapon();
     }
 
@@ -29,7 +31,7 @@ public class PlayerController : MonoBehaviour
 
         if (this.UI == null)
         {
-            Debug.LogWarning("UI NOT FOUND");
+            Debug.LogWarning("[PlayerController] - UI NOT FOUND");
         }
     }
 
@@ -40,7 +42,7 @@ public class PlayerController : MonoBehaviour
 
         if (this.TimeScale == null)
         {
-            Debug.LogWarning("TIMESCALE NOT FOUND");
+            Debug.LogWarning("[PlayerController] - TIMESCALE NOT FOUND");
         }
     }
 
@@ -60,7 +62,18 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("UNIT NOT FOUND");
+            Debug.LogWarning("[PlayerController] - UNIT NOT FOUND");
+        }
+    }
+
+    private void LoadDash()
+    {
+        /* Find the Unit component within myself */
+        this.Dash = this.GetComponent<Dash>();
+
+        if (this.Dash == null)
+        {
+            Debug.LogWarning("[PlayerController] - BOOSTER NOT FOUND");
         }
     }
 
@@ -75,13 +88,14 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("WEAPON NOT FOUND");
+            Debug.LogWarning("[PlayerController] - WEAPON NOT FOUND");
         }
     }
 
     // Update is called once per frame
     void Update()
     {
+        this.CheckDash();
         this.CheckMovement();
         this.CheckRotation();
         this.CheckFire();
@@ -90,7 +104,7 @@ public class PlayerController : MonoBehaviour
 
     private void CheckMovement()
     {
-        if (this.Unit == null) { return; }
+        if (this.Unit == null || this.Dash.Started) { return; }
 
         /* Get the sum of both axis */
         var vertical = Vector3.up * Input.GetAxis(InputAxesNames.Vertical);
@@ -100,12 +114,12 @@ public class PlayerController : MonoBehaviour
         /* Move the Unit in desired direction */
         this.Unit.Move(result, this.TimeScale.PlayerScale);
 
-        this.UI.SlowMotionIndicator.rectTransform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, this.transform.position);
+        this.UI.SpecialBar.RectTransform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, this.transform.position);
     }
 
     private void CheckRotation()
     {
-        if (this.Unit == null) { return; }
+        if (this.Unit == null || this.Dash.Started) { return; }
 
         /* Get the direction to the current position of the mouse */
         var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -132,6 +146,28 @@ public class PlayerController : MonoBehaviour
 
         /* Get the input from SlowMotion axis */
         this.TimeScale.SlowMotion(Input.GetAxis("SlowMotion") == 1);
+    }
+
+    private void CheckDash()
+    {
+        if (Input.GetAxis(InputAxesNames.Dash) == 0) { return; }
+
+        /* Get the bigger axis */
+        var vertical = Vector3.up * Input.GetAxis(InputAxesNames.Vertical);
+        var horizontal = Vector3.right * Input.GetAxis(InputAxesNames.Horizontal);
+        Vector3 result;
+
+        if (horizontal.magnitude >= vertical.magnitude)
+        {
+            result = horizontal;
+        }
+        else
+        {
+            result = vertical;
+        }
+
+        /* Dash in the desired direction */
+        this.Dash.StartDash(result, 2);
     }
 
     void UpdateHealth()
